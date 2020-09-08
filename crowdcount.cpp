@@ -224,20 +224,17 @@ int main(int argc, char** argv)
 
     // run inference
     float scores[OUTPUT_C*OUTPUT_H*OUTPUT_W];
-    crowdCount.doInference(data, scores, 1);
+    auto start_time = std::chrono::system_clock::now();
+    for(int i=0; i<100; i++){
+        crowdCount.doInference(data, scores, 1);
+    }
+    auto end_time = std::chrono::system_clock::now();
+    std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(end_time-start_time).count()/100.0 << "ms" << std::endl;
     float people_count = 0;
     for(int i=0;i<OUTPUT_C*OUTPUT_H*OUTPUT_W;i++){
         people_count+=scores[i];
     }
     std::cout << "finished" << people_count << std::endl;
 
-
     return 0;
 }
-
-
-
-
-
-
-
